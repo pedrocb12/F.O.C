@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "react-native-radial-gradient": "^1.2.1"
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-radial-gradient": "^1.2.1",
+    "react-native-reanimated": "4.5.1"
   }
 }
