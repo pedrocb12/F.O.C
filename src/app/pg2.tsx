@@ -1,34 +1,32 @@
-import { View, Text, Pressable, StyleSheet, ScrollView } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect, useState } from 'react';
+import { LinearGradient } from "expo-linear-gradient";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { carregarRegistros, type Registro } from "../storage/financeStorage";
 
 export default function Detalhe() {
-  const [saldo, setSaldo] = useState(2000);
-  const [devendo, setDevendo] = useState(600);
-  const [registros, setRegistros] = useState<Registro[]>(registrosIniciais);
-  const { registros: registrosParam } = useLocalSearchParams<{
-    registros?: string;
-  }>();
+  const [saldo, setSaldo] = useState(0);
+  const [devendo, setDevendo] = useState(0);
+  const [registros, setRegistros] = useState<Registro[]>([]);
 
-  useEffect(() => {
-    if (registrosParam) {
-      try {
-        const registrosRecebidos = JSON.parse(registrosParam) as Registro[];
-        setRegistros(registrosRecebidos);
-        atualizarTotais(registrosRecebidos);
-      } catch {
-        setRegistros([]);
-      }
-    }
-  }, [registrosParam]);
+  const carregarDados = useCallback(async () => {
+    const lista = await carregarRegistros();
+    setRegistros(lista);
+    atualizarTotais(lista);
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      carregarDados();
+    }, [carregarDados]),
+  );
 
   function atualizarTotais(lista: Registro[]) {
     const entradas = lista
-      .filter((registro) => registro.tipo === 'entrada')
+      .filter((registro) => registro.tipo === "entrada")
       .reduce((total, registro) => total + registro.valor, 0);
     const dividas = lista
-      .filter((registro) => registro.tipo === 'divida')
+      .filter((registro) => registro.tipo === "divida")
       .reduce((total, registro) => total + registro.valor, 0);
 
     setSaldo(entradas);
@@ -41,24 +39,23 @@ export default function Detalhe() {
       return;
     }
 
-    router.replace('/');
+    router.replace("/");
   }
 
   const listaVisivel = registros.length > 0 ? registros : [];
 
   return (
     <View style={styles.tela}>
-     
       <LinearGradient
-        colors={['#386679', '#181B1C']}
+        colors={["#386679", "#181B1C"]}
         locations={[0, 1]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={styles.backgroundGradient}
       />
-       <View style={styles.quadrado} />
+      <View style={styles.quadrado} />
       <LinearGradient
-        colors={['#282B2CAB', '#171A1B57']}
+        colors={["#282B2CAB", "#171A1B57"]}
         locations={[0, 1]}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
@@ -73,14 +70,14 @@ export default function Detalhe() {
         <View style={styles.controles}>
           <Pressable
             style={styles.botao_de_mais}
-            onPress={() => router.push({ pathname: '/valor', params: { tipo: 'entrada', registros: JSON.stringify(registros) } })}
+            onPress={() => router.push("/valor?tipo=entrada")}
           >
             <Text style={styles.textoControle}>+</Text>
           </Pressable>
 
           <Pressable
             style={styles.botao_de_menos}
-            onPress={() => router.push({ pathname: '/valor', params: { tipo: 'divida', registros: JSON.stringify(registros) } })}
+            onPress={() => router.push("/valor?tipo=divida")}
           >
             <Text style={styles.textoControle}>-</Text>
           </Pressable>
@@ -95,11 +92,11 @@ export default function Detalhe() {
               <View>
                 <Text style={styles.nomeRegistro}>{registro.nome}</Text>
                 <Text style={styles.tipoRegistro}>
-                  {registro.tipo === 'entrada' ? 'Ganho' : 'Gasto'}
+                  {registro.tipo === "entrada" ? "Ganho" : "Gasto"}
                 </Text>
               </View>
               <Text style={styles.valorRegistro}>
-                {registro.tipo === 'entrada' ? '+' : '-'} {registro.valor} reais
+                {registro.tipo === "entrada" ? "+" : "-"} {registro.valor} reais
               </Text>
             </View>
           ))
@@ -109,7 +106,6 @@ export default function Detalhe() {
           <Text style={styles.textoBotao}>Voltar</Text>
         </Pressable>
       </ScrollView>
-
     </View>
   );
 }
@@ -117,13 +113,13 @@ export default function Detalhe() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#181B1C',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#181B1C",
   },
 
   backgroundGradient: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
     bottom: 0,
@@ -131,25 +127,25 @@ const styles = StyleSheet.create({
   },
 
   texto: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 25,
     marginBottom: 30,
   },
 
   texto2: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 22,
     marginBottom: 12,
   },
 
   texto3: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 22,
     marginBottom: 24,
   },
 
   controles: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 12,
     marginBottom: 24,
   },
@@ -158,123 +154,110 @@ const styles = StyleSheet.create({
     width: 52,
     height: 44,
     borderRadius: 12,
-    backgroundColor: '#386679',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#386679",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   botao_de_menos: {
     width: 52,
     height: 44,
     borderRadius: 12,
-    backgroundColor: '#793843',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#793843",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   textoControle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 26,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   botao: {
     width: 120,
     height: 45,
-    backgroundColor: '#636363',
+    backgroundColor: "#636363",
     borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   textoBotao: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    color: "#FFFFFF",
+    fontWeight: "bold",
   },
 
   quadrado: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    width: '100%',
+    width: "100%",
     height: 80,
-    backgroundColor: '#141617',
+    backgroundColor: "#141617",
   },
 
   quadradobaixo2: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    width: '100%',
+    width: "100%",
     height: 507,
     borderTopLeftRadius: 36,
     borderTopRightRadius: 36,
   },
 
   conteudo: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     paddingTop: 100,
     paddingBottom: 32,
   },
 
   tituloLista: {
-    width: '90%',
-    color: '#FFFFFF',
+    width: "90%",
+    color: "#FFFFFF",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 12,
   },
 
   listaVazia: {
-    color: '#C7D2D5',
+    color: "#C7D2D5",
     fontSize: 16,
     marginBottom: 24,
   },
 
   registro: {
-    width: '90%',
+    width: "90%",
     minHeight: 64,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 10,
     marginBottom: 8,
     borderRadius: 12,
-    backgroundColor: '#202829',
+    backgroundColor: "#202829",
   },
 
   nomeRegistro: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   tipoRegistro: {
-    color: '#A8B4B8',
+    color: "#A8B4B8",
     fontSize: 13,
     marginTop: 3,
   },
 
   valorRegistro: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
-
-type Registro = {
-  id: string;
-  nome: string;
-  valor: number;
-  tipo: 'entrada' | 'divida';
-};
-
-const registrosIniciais: Registro[] = [
-  { id: 'salario', nome: 'Salário', valor: 2000, tipo: 'entrada' },
-  { id: 'mercado', nome: 'Compras do mercado', valor: 400, tipo: 'divida' },
-  { id: 'transporte', nome: 'Transporte', valor: 200, tipo: 'divida' },
-];

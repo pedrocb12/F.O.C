@@ -1,16 +1,23 @@
-import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { adicionarRegistro, type Registro } from "../storage/financeStorage";
 
 export default function EscolherValor() {
-  const { tipo, registros: registrosParam } = useLocalSearchParams<{
-    tipo?: string;
-    registros?: string;
-  }>();
-  const [nome, setNome] = useState('');
-  const [valorTexto, setValorTexto] = useState('');
-  const valor = Number(valorTexto.replace(',', '.'));
-  const podeConfirmar = nome.trim().length > 0 && Number.isFinite(valor) && valor > 0;
+  const { tipo } = useLocalSearchParams<{ tipo?: string }>();
+  const [nome, setNome] = useState("");
+  const [valorTexto, setValorTexto] = useState("");
+  const [erro, setErro] = useState("");
+  const [nomeTocado, setNomeTocado] = useState(false);
+  const [valorTocado, setValorTocado] = useState(false);
+
+  const valor = Number(valorTexto.replace(",", "."));
+  const nomeValido = nome.trim().length > 0;
+  const valorValido =
+    valorTexto.trim().length > 0 && Number.isFinite(valor) && valor > 0;
+
+  const mostrarErroNome = nomeTocado && !nomeValido;
+  const mostrarErroValor = valorTocado && !valorValido;
 
   function cancelar() {
     if (router.canGoBack()) {
@@ -18,57 +25,85 @@ export default function EscolherValor() {
       return;
     }
 
-    router.replace('/pg2');
+    router.replace("/pg2");
   }
 
-  function confirmar() {
-    if (!podeConfirmar) {
+  async function confirmar() {
+    setNomeTocado(true);
+    setValorTocado(true);
+
+    if (!nomeValido) {
+      setErro(
+        tipo === "divida"
+          ? "Digite o nome do gasto antes de confirmar."
+          : "Digite o nome do ganho antes de confirmar.",
+      );
       return;
     }
 
-    const registrosAtuais = registrosParam ? JSON.parse(registrosParam) : [];
-    const novoRegistro = {
+    if (!valorValido) {
+      setErro("Digite um valor maior que zero.");
+      return;
+    }
+
+    const novoRegistro: Registro = {
       id: `${Date.now()}`,
       nome: nome.trim(),
       valor,
-      tipo: tipo === 'divida' ? 'divida' : 'entrada',
+      tipo: tipo === "divida" ? "divida" : "entrada",
     };
 
-    router.replace({
-      pathname: '/pg2',
-      params: { registros: JSON.stringify([...registrosAtuais, novoRegistro]) },
-    });
+    setErro("");
+    await adicionarRegistro(novoRegistro);
+    router.replace("/pg2");
   }
 
   return (
     <View style={styles.tela}>
       <Text style={styles.titulo}>Escolha a quantia</Text>
       <Text style={styles.subtitulo}>
-        {tipo === 'divida' ? 'Quanto você deve?' : 'Quanto você ganhou?'}
+        {tipo === "divida" ? "Quanto você deve?" : "Quanto você ganhou?"}
       </Text>
 
       <TextInput
         autoFocus
-        style={styles.campoNome}
+        style={[styles.campoNome, mostrarErroNome && styles.campoErro]}
         value={nome}
-        onChangeText={setNome}
-        placeholder={tipo === 'divida' ? 'Nome do gasto' : 'Nome do ganho'}
+        onChangeText={(texto) => {
+          setNome(texto);
+          if (nomeTocado) setNomeTocado(true);
+          if (erro) setErro("");
+        }}
+        onBlur={() => setNomeTocado(true)}
+        placeholder={tipo === "divida" ? "Nome do gasto" : "Nome do ganho"}
         placeholderTextColor="#A8B4B8"
       />
+      {mostrarErroNome ? (
+        <Text style={styles.textoErro}>Nome obrigatório.</Text>
+      ) : null}
 
       <TextInput
-        style={styles.campoValor}
+        style={[styles.campoValor, mostrarErroValor && styles.campoErro]}
         value={valorTexto}
-        onChangeText={setValorTexto}
+        onChangeText={(texto) => {
+          setValorTexto(texto);
+          if (valorTocado) setValorTocado(true);
+          if (erro) setErro("");
+        }}
+        onBlur={() => setValorTocado(true)}
         keyboardType="decimal-pad"
         placeholder="Digite o valor"
         placeholderTextColor="#A8B4B8"
       />
+      {mostrarErroValor ? (
+        <Text style={styles.textoErro}>Digite um valor maior que zero.</Text>
+      ) : null}
+
+      {erro ? <Text style={styles.textoErro}>{erro}</Text> : null}
 
       <Pressable
-        style={[styles.botaoConfirmar, !podeConfirmar && styles.botaoDesativado]}
+        style={[styles.botaoConfirmar, styles.botaoDesativado]}
         onPress={confirmar}
-        disabled={!podeConfirmar}
       >
         <Text style={styles.textoBotao}>Confirmar</Text>
       </Pressable>
@@ -83,19 +118,19 @@ export default function EscolherValor() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 24,
-    backgroundColor: '#181B1C',
+    backgroundColor: "#181B1C",
   },
   titulo: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 12,
   },
   subtitulo: {
-    color: '#C7D2D5',
+    color: "#C7D2D5",
     fontSize: 17,
     marginBottom: 24,
   },
@@ -103,12 +138,12 @@ const styles = StyleSheet.create({
     width: 220,
     height: 52,
     borderWidth: 2,
-    borderColor: '#8AA5AD',
+    borderColor: "#8AA5AD",
     borderRadius: 12,
     paddingHorizontal: 16,
-    color: '#FFFFFF',
-    backgroundColor: '#202829',
-    textAlign: 'center',
+    color: "#FFFFFF",
+    backgroundColor: "#202829",
+    textAlign: "center",
     fontSize: 20,
     marginBottom: 18,
   },
@@ -116,22 +151,25 @@ const styles = StyleSheet.create({
     width: 220,
     height: 52,
     borderWidth: 2,
-    borderColor: '#8AA5AD',
+    borderColor: "#8AA5AD",
     borderRadius: 12,
     paddingHorizontal: 16,
-    color: '#FFFFFF',
-    backgroundColor: '#202829',
-    textAlign: 'center',
+    color: "#FFFFFF",
+    backgroundColor: "#202829",
+    textAlign: "center",
     fontSize: 18,
-    marginBottom: 12,
+    marginBottom: 8,
+  },
+  campoErro: {
+    borderColor: "#FF6B6B",
   },
   botaoConfirmar: {
     width: 220,
     height: 48,
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#386679',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#386679",
     marginBottom: 12,
   },
   botaoDesativado: {
@@ -141,13 +179,20 @@ const styles = StyleSheet.create({
     width: 220,
     height: 48,
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#636363',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#636363",
   },
   textoBotao: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    color: "#FFFFFF",
+    fontWeight: "bold",
     fontSize: 16,
+  },
+  textoErro: {
+    width: 220,
+    color: "#FFB4B4",
+    fontSize: 13,
+    textAlign: "center",
+    marginBottom: 12,
   },
 });
