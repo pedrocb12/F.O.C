@@ -1,6 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { useCallback } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
@@ -9,11 +10,18 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
+
+import { AppHeader } from "@/components/app-header";
 
 export default function App() {
   const router = useRouter();
 
   const posicaoY = useSharedValue(0);
+
+  const irParaPg2 = useCallback(() => {
+    router.push("/pg2");
+  }, [router]);
 
   // pedro e eu lembremsse dessa alteraçao que fizemos no codigo do app, para que o quadrado de baixo nao suba infinitamente, e sim ate um certo ponto, e que o botao volte para a posicao inicial caso nao seja arrastado o suficiente para cima.
   const mudancamaxima = -600;
@@ -25,7 +33,7 @@ export default function App() {
     })
     .onEnd(() => {
       if (posicaoY.value < -100) {
-        router.push("/pg2");
+        scheduleOnRN(irParaPg2);
 
         posicaoY.value = 0;
       } else {
@@ -64,21 +72,7 @@ export default function App() {
         style={styles.backgroundGradient}
       />
 
-      <View style={styles.quadrado} />
-
-      <View style={styles.quadradoesquerda}>
-        <Text style={styles.logo}>   LOGO</Text>
-      </View>
-
-      <Text style={styles.texto2}>José</Text>
-
-      <View style={styles.quadradodireita}>
-        <Image
-          source={require("@/assets/images/1768630.png")}
-          style={styles.imagemdadireita}
-          resizeMode="contain"
-        />
-      </View>
+      <AppHeader nome="José" />
 
       <View style={styles.conteudo}>
         <Text style={styles.texto}>Bem vindo</Text>
@@ -110,12 +104,6 @@ const styles = StyleSheet.create({
     left: 0,
   },
 
-  quadrado: {
-    width: "100%",
-    height: 80,
-    backgroundColor: "#141617",
-  },
-
   conteudo: {
     flex: 1,
     justifyContent: "center",
@@ -129,15 +117,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     color: "#FFFFFF",
     textAlign: "center",
-  },
-
-  texto2: {
-    position: "absolute",
-    top: 40,
-    left: "75%",
-    fontSize: 15,
-    color: "#FFFFFF",
-    textAlign: "left",
   },
 
   areaBaixo: {
@@ -172,52 +151,5 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     lineHeight: 28,
-  },
-  quadradocima: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    width: "100%",
-    height: 80,
-    backgroundColor: "#131415",
-    borderBottomLeftRadius: 36,
-    borderBottomRightRadius: 36,
-    borderTopLeftRadius: 36,
-    borderTopRightRadius: 36,
-  },
-  quadradoesquerda: {
-    position: "absolute",
-    top: 30,
-    left: 12,
-    width: "28%",
-    height: 36,
-    backgroundColor: "#3f4041",
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    justifyContent: "center",
-    paddingLeft: 12,
-  },
-  quadradodireita: {
-    position: "absolute",
-    top: 30,
-    right: 12,
-    width: 36,
-    height: 36,
-    backgroundColor: "#3f4041",
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  imagemdadireita: {
-    width: 30,
-    height: 30,
-  },
-  logo: {
-    color: "#181818",
-    fontWeight: 600,
-    fontSize: 20,
   },
 });
