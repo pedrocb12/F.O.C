@@ -18,6 +18,7 @@ export default function EscolherValor() {
 
   const mostrarErroNome = nomeTocado && !nomeValido;
   const mostrarErroValor = valorTocado && !valorValido;
+  const podeConfirmar = nomeValido && valorValido;
 
   function cancelar() {
     if (router.canGoBack()) {
@@ -102,7 +103,10 @@ export default function EscolherValor() {
       {erro ? <Text style={styles.textoErro}>{erro}</Text> : null}
 
       <Pressable
-        style={[styles.botaoConfirmar, styles.botaoDesativado]}
+        style={[
+          styles.botaoConfirmar,
+          !podeConfirmar && styles.botaoDesativado,
+        ]}
         onPress={confirmar}
       >
         <Text style={styles.textoBotao}>Confirmar</Text>
