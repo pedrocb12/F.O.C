@@ -5,7 +5,7 @@
 
 [![CI](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml/badge.svg)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml) [![Nota](https://img.shields.io/badge/Nota%20PAM%20I-R-orange)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml)
 
-**R** — Regular · **45%** (25/55 pontos) · atualizado em 2026-10-05 23:26
+**R** — Regular · **45%** (25/55 pontos) · atualizado em 2026-10-06 00:06
 
 | Fase | Pontos |
 |------|--------|
