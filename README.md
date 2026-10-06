@@ -1,5 +1,21 @@
 # F.O.C
 
+<!-- PAM-CI-NOTA-INICIO -->
+### Nota atual (automática) — F.O.C (controle financeiro)
+
+[![CI](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml/badge.svg)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml) [![Nota](https://img.shields.io/badge/Nota%20PAM%20I-R-orange)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml)
+
+**R** — Regular · **45%** (25/55 pontos) · atualizado em 2026-10-05 23:26
+
+| Fase | Pontos |
+|------|--------|
+| Fase 1 — Estrutura | 8/10 |
+| Fase 2 — AsyncStorage | 13/15 |
+| Fase 3 — SQLite | 4/30 |
+
+Checklist item a item em [NOTA.md](NOTA.md) · [ver a rodada mais recente no Actions](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml)
+<!-- PAM-CI-NOTA-FIM -->
+
 **Financial Operational Control** — Trabalho em Grupo de PAM I
 
 Aplicativo de **gestão financeira** — controle de operações/despesas.
