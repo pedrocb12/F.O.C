@@ -4,17 +4,17 @@
 
 ## Nota PAM I — F.O.C (controle financeiro)
 
-![](https://img.shields.io/static/v1?label=Nota%20PAM%20I&message=R&color=orange)
+![](https://img.shields.io/static/v1?label=Nota%20PAM%20I&message=MB&color=green)
 
-**Nota atual: R** · 45% (25/55 pontos) · rodada de 2026-10-06 00:06:47 · commit `4b51139`
+**Nota atual: MB** · 80% (44/55 pontos) · rodada de 2026-10-26 16:03:40 · commit `3205806`
 
 Legenda: I = Insuficiente (0–25%) · R = Regular (25–50%) · B = Bom (50–75%) · MB = Muito bom (75–100%)
 
 | Fase | Pontos | Situação |
 |---|---|---|
 | Fase 1 — Estrutura | 8/10 | em desenvolvimento |
-| Fase 2 — AsyncStorage | 13/15 | em desenvolvimento |
-| Fase 3 — SQLite | 4/30 | iniciando |
+| Fase 2 — AsyncStorage | 14/15 | em desenvolvimento |
+| Fase 3 — SQLite | 22/30 | em desenvolvimento |
 
 ## Checklist validado
 
@@ -27,45 +27,45 @@ Legenda: I = Insuficiente (0–25%) · R = Regular (25–50%) · B = Bom (50–7
 - [x] **(+1 pts)** Existem dados iniciais (seed) em arquivo de dados — `src/storage/financeStorage.ts`
 - [x] **(+1 pts)** Existe tela de FORMULÁRIO — `src/app/valor.tsx`
 - [x] **(+1 pts)** Existe tela de DETALHE — `src/app/pg2.tsx`
-- [ ] **(+1 pts)** Dependências importadas existem no package.json (app não quebra ao abrir) — `fs, path, readline, @/components/app-header, @/assets/images/expo-logo.png`
+- [ ] **(+1 pts)** Dependências importadas existem no package.json (app não quebra ao abrir) — `fs, path, readline, @/components/app-header, @/components/araya-surpresa`
 - [x] **(+1 pts)** app.json identifica o app (name/slug preenchidos) — `app.json`
 - [ ] **(+1 pts)** Projeto tem pelo menos 2 arquivos de tela/código — `0 arquivos de tela`
 
-### Fase 2 — Persistência com AsyncStorage (13/15 pts)
+### Fase 2 — Persistência com AsyncStorage (14/15 pts)
 
 - [x] **(+1 pts)** Dependência async-storage está no package.json — `no package.json`
 - [x] **(+1 pts)** Existe import do AsyncStorage no código — `src/storage/financeStorage.ts`
 - [x] **(+1 pts)** Storage faz leitura com AsyncStorage.getItem — `src/storage/financeStorage.ts`
 - [x] **(+1 pts)** Storage grava com AsyncStorage.setItem — `src/storage/financeStorage.ts`
-- [x] **(+1 pts)** Existe função de CARREGAR a lista (carregar/load) — `src/app/pg2.tsx`
+- [x] **(+1 pts)** Existe função de CARREGAR a lista (carregar/load) — `metro.config.js`
 - [x] **(+1 pts)** Existe função de ADICIONAR/CADASTRAR — `src/app/valor.tsx`
-- [x] **(+1 pts)** Existe busca por id (buscar/find/getItem) — `src/storage/financeStorage.ts`
+- [x] **(+1 pts)** Existe busca por id (buscar/find/getItem) — `src/app/registro.tsx`
 - [x] **(+1 pts)** Existe função de EXCLUIR/remover — `src/app/pg2.tsx`
 - [x] **(+1 pts)** Formulário lê entradas com TextInput — `src/app/valor.tsx`
 - [x] **(+1 pts)** Formulário salva chamando adicionar/salvar — `src/app/valor.tsx`
 - [ ] **(+1 pts)** Lista é alimentada a partir do storage — `src/app/index.tsx`
 - [x] **(+1 pts)** Tela de detalhe usa busca/dados do storage — `src/app/pg2.tsx`
-- [ ] **(+1 pts)** Exclusão usa confirmação (Alert.alert) — `—`
+- [x] **(+1 pts)** Exclusão usa confirmação (Alert.alert) — `src/app/registro.tsx`
 - [x] **(+1 pts)** Dados iniciais/seed são gravados na 1ª execução — `src/storage/financeStorage.ts`
 - [x] **(+1 pts)** Formulário valida campos (trim/length/vazio) — `src/app/valor.tsx`
 
-### Fase 3 — Banco de dados SQLite (4/30 pts)
+### Fase 3 — Banco de dados SQLite (22/30 pts)
 
-- [ ] **(+2x2 pts)** Dependência expo-sqlite está no package.json — `FALTA instalar: npx expo install expo-sqlite`
-- [ ] **(+2x2 pts)** Existe import do expo-sqlite — `—`
+- [x] **(+2x2 pts)** Dependência expo-sqlite está no package.json — `no package.json`
+- [x] **(+2x2 pts)** Existe import do expo-sqlite — `metro.config.js`
 - [ ] **(+2x2 pts)** Existe arquivo de banco de dados — `—`
-- [ ] **(+2x2 pts)** Cria a tabela com CREATE TABLE IF NOT EXISTS — `—`
-- [ ] **(+2x2 pts)** Insere dados com INSERT INTO — `—`
+- [x] **(+2x2 pts)** Cria a tabela com CREATE TABLE IF NOT EXISTS — `src/storage/financeStorage.ts`
+- [x] **(+2x2 pts)** Insere dados com INSERT INTO — `src/storage/financeStorage.ts`
 - [x] **(+2x2 pts)** Consulta com SELECT — `src/components/themed-text.tsx`
-- [ ] **(+2x2 pts)** Atualiza com UPDATE — `—`
-- [ ] **(+2x2 pts)** Exclui com DELETE FROM — `—`
-- [ ] **(+2x2 pts)** Usa filtros com WHERE — `—`
-- [ ] **(+2x2 pts)** Banco aberto com openDatabaseAsync/openDatabase — `—`
+- [x] **(+2x2 pts)** Atualiza com UPDATE — `src/storage/financeStorage.ts`
+- [x] **(+2x2 pts)** Exclui com DELETE FROM — `src/storage/financeStorage.ts`
+- [x] **(+2x2 pts)** Usa filtros com WHERE — `src/storage/financeStorage.ts`
+- [x] **(+2x2 pts)** Banco aberto com openDatabaseAsync/openDatabase — `src/storage/financeStorage.ts`
 - [ ] **(+2x2 pts)** Tela de lista carrega dados do banco — `src/app/index.tsx`
 - [ ] **(+2x2 pts)** Formulário salva no banco (INSERT/runAsync) — `src/app/valor.tsx`
 - [ ] **(+2x2 pts)** Detalhe busca no banco com WHERE/SELECT — `src/app/pg2.tsx`
 - [x] **(+2x2 pts)** Usa async/await corretamente (mais de 2 await) — `scripts/reset-project.js`
-- [ ] **(+2x2 pts)** Banco possui dados iniciais (seed inserido em SQL) — `—`
+- [x] **(+2x2 pts)** Banco possui dados iniciais (seed inserido em SQL) — `src/storage/financeStorage.ts`
 
 ## Para evoluir a nota
 

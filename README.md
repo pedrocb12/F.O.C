@@ -1,5 +1,21 @@
 # F.O.C — Financial Operational Control
 
+<!-- PAM-CI-NOTA-INICIO -->
+### Nota atual (automática) — F.O.C (controle financeiro)
+
+[![CI](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml/badge.svg)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml) [![Nota](https://img.shields.io/badge/Nota%20PAM%20I-MB-green)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml)
+
+**MB** — Muito bom · **80%** (44/55 pontos) · atualizado em 2026-10-26 16:03
+
+| Fase | Pontos |
+|------|--------|
+| Fase 1 — Estrutura | 8/10 |
+| Fase 2 — AsyncStorage | 14/15 |
+| Fase 3 — SQLite | 22/30 |
+
+Checklist item a item em [NOTA.md](NOTA.md) · [ver a rodada mais recente no Actions](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml)
+<!-- PAM-CI-NOTA-FIM -->
+
 Aplicativo de gestão financeira desenvolvido em grupo para a disciplina de Programação de Aplicativos Mobile I (PAM I). O F.O.C ajuda a registrar entradas e gastos, consultar o saldo e acompanhar contas em um painel simples.
 
 ## Integrantes
