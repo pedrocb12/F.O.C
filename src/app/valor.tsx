@@ -1,24 +1,69 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import { adicionarRegistro, type Registro } from "../storage/financeStorage";
+import {
+  adicionarRegistro,
+  buscarRegistro,
+  atualizarRegistro,
+  type Registro,
+} from "../storage/financeStorage";
+import { ArayaSurpresa } from "@/components/araya-surpresa";
 
 export default function EscolherValor() {
-  const { tipo } = useLocalSearchParams<{ tipo?: string }>();
+  const { id, tipo } = useLocalSearchParams<{ id?: string; tipo?: string }>();
   const [nome, setNome] = useState("");
   const [valorTexto, setValorTexto] = useState("");
   const [erro, setErro] = useState("");
   const [nomeTocado, setNomeTocado] = useState(false);
   const [valorTocado, setValorTocado] = useState(false);
+  const [salvando, setSalvando] = useState(false);
+  const [surpresaAtiva, setSurpresaAtiva] = useState(false);
+  const [tipoRegistro, setTipoRegistro] = useState<"entrada" | "divida">(
+    tipo === "divida" ? "divida" : "entrada",
+  );
+
+  useEffect(() => {
+    if (!id) return;
+
+    let ativo = true;
+    buscarRegistro(id)
+      .then((registro) => {
+        if (!ativo) return;
+        if (!registro) {
+          setErro("Este lançamento não foi encontrado.");
+          return;
+        }
+        setNome(registro.nome);
+        setValorTexto(String(registro.valor));
+        setTipoRegistro(registro.tipo);
+      })
+      .catch((falha: unknown) => {
+        if (ativo) {
+          setErro(
+            falha instanceof Error
+              ? falha.message
+              : "Não foi possível carregar o lançamento.",
+          );
+        }
+      });
+
+    return () => {
+      ativo = false;
+    };
+  }, [id]);
 
   const valor = Number(valorTexto.replace(",", "."));
-  const nomeValido = nome.trim().length > 0;
+  const nomeValido = nome.trim().length > 0 && nome.trim().length <= 60;
   const valorValido =
     valorTexto.trim().length > 0 && Number.isFinite(valor) && valor > 0;
 
   const mostrarErroNome = nomeTocado && !nomeValido;
   const mostrarErroValor = valorTocado && !valorValido;
   const podeConfirmar = nomeValido && valorValido;
+
+  if (surpresaAtiva) {
+    return <ArayaSurpresa onMusicaFinalizada={() => router.replace("/pg2")} />;
+  }
 
   function cancelar() {
     if (router.canGoBack()) {
@@ -48,22 +93,50 @@ export default function EscolherValor() {
     }
 
     const novoRegistro: Registro = {
-      id: `${Date.now()}`,
+      id: id ?? `${Date.now()}`,
       nome: nome.trim(),
       valor,
-      tipo: tipo === "divida" ? "divida" : "entrada",
+      tipo: tipoRegistro,
     };
 
     setErro("");
-    await adicionarRegistro(novoRegistro);
-    router.replace("/pg2");
+    setSalvando(true);
+    try {
+      if (id) {
+        await atualizarRegistro(novoRegistro);
+      } else {
+        await adicionarRegistro(novoRegistro);
+      }
+      const ativarSurpresa =
+        tipoRegistro === "entrada" &&
+        valor === 676767 &&
+        nome.trim().toLocaleLowerCase("pt-BR") === "araya";
+
+      if (ativarSurpresa) {
+        setSurpresaAtiva(true);
+      } else if (id) {
+        router.back();
+      } else {
+        router.replace("/pg2");
+      }
+    } catch (falha) {
+      setErro(
+        falha instanceof Error
+          ? falha.message
+          : "Não foi possível salvar o lançamento.",
+      );
+    } finally {
+      setSalvando(false);
+    }
   }
 
   return (
     <View style={styles.tela}>
-      <Text style={styles.titulo}>Escolha a quantia</Text>
+      <Text style={styles.titulo}>
+        {id ? "Editar lançamento" : "Novo lançamento"}
+      </Text>
       <Text style={styles.subtitulo}>
-        {tipo === "divida" ? "Quanto você deve?" : "Quanto você ganhou?"}
+        {tipoRegistro === "divida" ? "Quanto você deve?" : "Quanto você ganhou?"}
       </Text>
 
       <TextInput
@@ -72,15 +145,17 @@ export default function EscolherValor() {
         value={nome}
         onChangeText={(texto) => {
           setNome(texto);
-          if (nomeTocado) setNomeTocado(true);
           if (erro) setErro("");
         }}
         onBlur={() => setNomeTocado(true)}
-        placeholder={tipo === "divida" ? "Nome do gasto" : "Nome do ganho"}
+        maxLength={60}
+        placeholder={tipoRegistro === "divida" ? "Nome do gasto" : "Nome do ganho"}
         placeholderTextColor="#A8B4B8"
       />
       {mostrarErroNome ? (
-        <Text style={styles.textoErro}>Nome obrigatório.</Text>
+        <Text style={styles.textoErro}>
+          Informe um nome com até 60 caracteres.
+        </Text>
       ) : null}
 
       <TextInput
@@ -88,7 +163,6 @@ export default function EscolherValor() {
         value={valorTexto}
         onChangeText={(texto) => {
           setValorTexto(texto);
-          if (valorTocado) setValorTocado(true);
           if (erro) setErro("");
         }}
         onBlur={() => setValorTocado(true)}
@@ -105,11 +179,14 @@ export default function EscolherValor() {
       <Pressable
         style={[
           styles.botaoConfirmar,
-          !podeConfirmar && styles.botaoDesativado,
+          (!podeConfirmar || salvando) && styles.botaoDesativado,
         ]}
-        onPress={confirmar}
+        onPress={() => void confirmar()}
+        disabled={!podeConfirmar || salvando}
       >
-        <Text style={styles.textoBotao}>Confirmar</Text>
+        <Text style={styles.textoBotao}>
+          {salvando ? "Salvando..." : "Confirmar"}
+        </Text>
       </Pressable>
 
       <Pressable style={styles.botaoCancelar} onPress={cancelar}>
