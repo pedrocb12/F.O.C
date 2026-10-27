@@ -48,3 +48,17 @@ Abra o QR Code no Expo Go ou pressione `w` no terminal para iniciar a versão we
 | Fase 2 | Formulário e persistência com AsyncStorage | 14/09/2026 |
 | Fase 3 | SQLite e operações CRUD | 19/10/2026 |
 | Fase 4 | Versão final e apresentação | 16/11/2026 |
+
+
+---
+
+## Colaboração por integrante
+
+> *Excluídos: commits do professor Jackson Sá (wendelmax), `github-actions[bot]` e `dependabot[bot]`. Contagem com base em `git log --no-merges`.*
+
+| # | Integrante | Commits | Participação |
+|---|------------|---------|--------------|
+| 1 | pedrocb12 | 10 | 90.9% ██████████████████░░ |
+| 2 | lucasdDanielAlvesDeAguiar | 1 | 9.1% █░░░░░░░░░░░░░░░░░░░ |
+
+**Total de commits considerados:** 11
