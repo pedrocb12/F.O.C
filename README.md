@@ -50,6 +50,7 @@ Abra o QR Code no Expo Go ou pressione `w` no terminal para iniciar a versão we
 | Fase 4 | Versão final e apresentação | 16/11/2026 |
 
 
+
 ---
 
 ## Colaboração por integrante
@@ -58,7 +59,7 @@ Abra o QR Code no Expo Go ou pressione `w` no terminal para iniciar a versão we
 
 | # | Integrante | Commits | Participação |
 |---|------------|---------|--------------|
-| 1 | pedrocb12 | 10 | 90.9% ██████████████████░░ |
-| 2 | lucasdDanielAlvesDeAguiar | 1 | 9.1% █░░░░░░░░░░░░░░░░░░░ |
+| 1 | Pedro Borges | 10 | 90.9% ██████████████████░░ |
+| 2 | Lucas Aguiar | 1 | 9.1% █░░░░░░░░░░░░░░░░░░░ |
 
 **Total de commits considerados:** 11
