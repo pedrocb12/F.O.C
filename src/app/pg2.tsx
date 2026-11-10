@@ -1,3 +1,4 @@
+import { AppHeader } from "@/components/app-header";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
@@ -9,7 +10,6 @@ import {
   Text,
   View,
 } from "react-native";
-import { AppHeader } from "@/components/app-header";
 import { carregarRegistros, type Registro } from "../storage/financeStorage";
 
 const moeda = (valor: number) =>
@@ -79,7 +79,13 @@ export default function Detalhe() {
 
         <View style={styles.colunas}>
           <View style={styles.acoesColuna}>
-            <Text style={styles.tituloSecao}>controles</Text>
+            <Pressable
+              accessibilityRole="button"
+              style={styles.tituloSecaoBotao}
+              onPress={() => router.push("/pg3")}
+            >
+              <Text style={styles.tituloSecaoTexto}>controles</Text>
+            </Pressable>
             <Pressable
               accessibilityRole="button"
               style={[styles.acao, styles.acaoEntrada]}
@@ -164,15 +170,16 @@ export default function Detalhe() {
                 <Text numberOfLines={1} style={styles.nomeConta}>
                   {indice + 1}- {conta.nome}
                 </Text>
-                <Text style={styles.valorDivida}>
-                  -{moeda(conta.valor)}
-                </Text>
+                <Text style={styles.valorDivida}>-{moeda(conta.valor)}</Text>
               </Pressable>
             ))
           )}
         </View>
 
-        <Pressable style={styles.botaoVoltar} onPress={() => router.replace("/")}>
+        <Pressable
+          style={styles.botaoVoltar}
+          onPress={() => router.replace("/")}
+        >
           <Text style={styles.textoVoltar}>Voltar</Text>
         </Pressable>
       </ScrollView>
@@ -225,6 +232,19 @@ const styles = StyleSheet.create({
   acoesColuna: {
     width: "43%",
     gap: 10,
+  },
+  tituloSecaoBotao: {
+    backgroundColor: "#080b0c",
+    borderRadius: 8,
+    paddingVertical: 9,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tituloSecaoTexto: {
+    color: "#91aabd",
+    fontSize: 18,
+    fontWeight: "700",
+    textTransform: "lowercase",
   },
   tituloSecao: {
     color: "#91aabd",
