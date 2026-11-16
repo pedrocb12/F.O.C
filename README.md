@@ -3,9 +3,9 @@
 <!-- PAM-CI-NOTA-INICIO -->
 ### Nota atual (automática) — F.O.C (controle financeiro)
 
-[![CI](https://github.com/ORG/REPO/actions/workflows/pam-ci.yml/badge.svg)](https://github.com/ORG/REPO/actions/workflows/pam-ci.yml) [![Nota](https://img.shields.io/badge/Nota%20PAM%20I-MB-green)](https://github.com/ORG/REPO/actions/workflows/pam-ci.yml)
+[![CI](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml/badge.svg)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml) [![Nota](https://img.shields.io/badge/Nota%20PAM%20I-MB-green)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml)
 
-**MB** — Muito bom · **84%** (84/100 pontos) · atualizado em 2026-11-10 01:29
+**MB** — Muito bom · **84%** (84/100 pontos) · atualizado em 2026-11-16 10:19
 
 | Fase | Pontos |
 |------|--------|
@@ -14,7 +14,7 @@
 | Fase 3 — SQLite | 24/30 |
 | Fase 4 — Versão Final (UX e Dispositivo) | 36/45 |
 
-Checklist item a item em [NOTA.md](NOTA.md) · [ver a rodada mais recente no Actions](https://github.com/ORG/REPO/actions/workflows/pam-ci.yml)
+Checklist item a item em [NOTA.md](NOTA.md) · [ver a rodada mais recente no Actions](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml)
 <!-- PAM-CI-NOTA-FIM -->
 
 Aplicativo de gestão financeira desenvolvido em grupo para a disciplina de Programação de Aplicativos Mobile I (PAM I). O F.O.C ajuda a registrar entradas e gastos, consultar o saldo e acompanhar contas em um painel simples.
