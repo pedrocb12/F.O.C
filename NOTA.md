@@ -6,7 +6,7 @@
 
 ![](https://img.shields.io/static/v1?label=Nota%20PAM%20I&message=MB&color=green)
 
-**Nota atual: MB** · 84% (84/100 pontos) · rodada de 2026-11-16 10:19:41 · commit `34c9be3`
+**Nota atual: MB** · 84% (84/100 pontos) · rodada de 2026-11-17 02:38:40 · commit `ccd75ad`
 
 Legenda: I = Insuficiente (0–25%) · R = Regular (25–50%) · B = Bom (50–75%) · MB = Muito bom (75–100%)
 
@@ -33,7 +33,7 @@ Legenda: I = Insuficiente (0–25%) · R = Regular (25–50%) · B = Bom (50–7
 
 - [x] **(+1 pts)** README.md existe e fala do projeto/grupo — `README.md`
 - [x] **(+1 pts)** Arquivo principal do app existe (src/app/_layout.tsx) — `src/app/_layout.tsx`
-- [x] **(+1 pts)** package.json existe com a dependência "expo" — `expo ~57.0.15`
+- [x] **(+1 pts)** package.json existe com a dependência "expo" — `expo ~57.0.33`
 - [x] **(+1 pts)** Existe tela de LISTAGEM — `src/app/index.tsx`
 - [x] **(+1 pts)** Existem dados iniciais (seed) em arquivo de dados — `src/storage/financeStorage.ts`
 - [x] **(+1 pts)** Existe tela de FORMULÁRIO — `src/app/valor.tsx`

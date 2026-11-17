@@ -5,7 +5,7 @@
 
 [![CI](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml/badge.svg)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml) [![Nota](https://img.shields.io/badge/Nota%20PAM%20I-MB-green)](https://github.com/pedrocb12/F.O.C/actions/workflows/pam-ci.yml)
 
-**MB** — Muito bom · **84%** (84/100 pontos) · atualizado em 2026-11-16 10:19
+**MB** — Muito bom · **84%** (84/100 pontos) · atualizado em 2026-11-17 02:38
 
 | Fase | Pontos |
 |------|--------|
